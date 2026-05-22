@@ -2,7 +2,8 @@
 #include <stdint.h>
 
 
-enum {
+enum
+{
         EMPTY = 0,
         WR, WN, WB, WQ, WK, WP,
         BR, BN, BB, BQ, BK, BP
@@ -24,7 +25,8 @@ uint64_t black_pawns_bb = 0ULL;
 
 uint64_t main_bb = 0ULL;
 
-static const char *symbols[] = {
+static const char *symbols[] =
+{
         [EMPTY] = ".",
         [WR] = "♖", [WN] = "♘", [WB] = "♗", [WQ] = "♕", [WK] = "♔", [WP] = "♙",
         [BR] = "♜", [BN] = "♞", [BB] = "♝", [BQ] = "♛", [BK] = "♚", [BP] = "♟"
@@ -48,6 +50,11 @@ static inline void clear_bit(uint64_t *bb, int bit)
         *bb &= ~(1ULL << bit);
 }
 
+static inline int get_sq(int rank, int file)
+{
+        return rank * 8 + file;
+}
+
 static int get_piece_at(uint64_t bb, int sq)
 {
         uint64_t mask = (1ULL << sq);
@@ -69,20 +76,36 @@ static int get_piece_at(uint64_t bb, int sq)
         return EMPTY;
 }
 
-static inline void print_bb(uint64_t bb, int show_n)
+int is_legal_knight_move(uint64_t bb, int from_sq, int to_sq)
+{
+        return 0;
+}
+
+void move_piece(uint64_t bb, int from_sq, int to_sq)
+{
+        int piece = get_piece_at(bb, from_sq);
+        if (piece == EMPTY) return;
+
+        if (piece == WN || piece == BN)
+        {
+                int is_legal_n_move = is_legal_knight_move(bb, from_sq, to_sq);
+        }
+}
+
+static inline void print_bb(uint64_t bb, int show_notation)
 {
         for (int rank = 7; rank >= 0; rank--)
         {
-                if (show_n) printf("%d ", rank + 1);
+                if (show_notation) printf("%d ", rank + 1);
                 for (int file = 0; file < 8; file++)
                 {
-                        int sq = rank * 8 + file;
+                        int sq = get_sq(rank, file);
                         int piece = get_piece_at(main_bb, sq);
                         printf("%s ", symbols[piece]);
                 }
                 printf("\n");
         }
-        if (show_n) printf("  a b c d e f g h\n\n");
+        if (show_notation) printf("  a b c d e f g h\n\n");
 }
 
 static inline void init_bbs(void)
@@ -108,5 +131,6 @@ int main(void)
 {
         init_bbs();
         print_bb(main_bb, 0);
+        move_piece(white_knights_bb, 6, 21);
         return 0;
 }
