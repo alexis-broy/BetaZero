@@ -1,6 +1,4 @@
 1. Nf3 d5
-2. c4 Qd6
-3. cxd5 Qxd5
-4. Nc3 c5
-5. Nxd5 Nc6
-6. Qa4 h6
+2. c4 dxc4
+3. f3 Nc6
+4. Bxc4 Nf6
